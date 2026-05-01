@@ -1,0 +1,61 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-inter: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  background: #FAFAFA;
+  color: #111111;
+  font-feature-settings: 'ss01', 'cv11';
+}
+
+/* Masonry grid */
+.masonry-grid {
+  display: flex;
+  margin-left: -24px;
+  width: auto;
+}
+
+.masonry-column {
+  padding-left: 24px;
+  background-clip: padding-box;
+}
+
+.masonry-column > * {
+  margin-bottom: 24px;
+}
+
+@media (min-width: 1024px) {
+  .masonry-grid {
+    margin-left: -32px;
+  }
+  .masonry-column {
+    padding-left: 32px;
+  }
+  .masonry-column > * {
+    margin-bottom: 32px;
+  }
+}
+
+/* Caption fade for desktop hover */
+@media (hover: hover) {
+  .tile-caption {
+    opacity: 0;
+    transition: opacity 300ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .tile:hover .tile-caption {
+    opacity: 1;
+  }
+}
+
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
