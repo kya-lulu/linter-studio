@@ -1,10 +1,13 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import ArtworkDetail from '@/components/ArtworkDetail';
-import { getArtworkBySlug, getAllSlugs } from '@/lib/artworks';
+import { getArtworkBySlug } from '@/lib/artworks';
+import { artworks } from '@/lib/artworks';
 
 export function generateStaticParams() {
-  return getAllSlugs().map((slug) => ({ slug }));
+  // Only generate detail pages for entries that have an image.
+  // Placeholder entries (image: null) live in the archive only.
+  return artworks.filter((a) => a.image).map((a) => ({ slug: a.slug }));
 }
 
 export async function generateMetadata({
@@ -17,7 +20,7 @@ export async function generateMetadata({
   if (!artwork) return {};
   return {
     title: `${artwork.title} — ${artwork.artist.name} · linter.studio`,
-    description: artwork.description.slice(0, 160),
+    description: (artwork.description || '').slice(0, 160),
   };
 }
 
@@ -28,7 +31,8 @@ export default async function WorkPage({
 }) {
   const { slug } = await params;
   const artwork = getArtworkBySlug(slug);
-  if (!artwork) notFound();
+  // 404 if not found OR if it's a placeholder (no image)
+  if (!artwork || !artwork.image) notFound();
 
   return (
     <main className="min-h-screen bg-canvas">
@@ -54,3 +58,4 @@ export default async function WorkPage({
     </main>
   );
 }
+
